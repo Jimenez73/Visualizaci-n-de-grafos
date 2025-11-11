@@ -1,0 +1,14 @@
+{
+    "nodes": [
+        { "id": 1, "label": "Nodo A (JSON)" },
+        { "id": 2, "label": "Nodo B (JSON)" },
+        { "id": 3, "label": "Nodo C" },
+        { "id": 4, "label": "Nodo D" }
+    ],
+    "edges": [
+        { "from": 1, "to": 2 },
+        { "from": 1, "to": 3 },
+        { "from": 2, "to": 4 },
+        { "from": 3, "to": 4 }
+    ]
+}

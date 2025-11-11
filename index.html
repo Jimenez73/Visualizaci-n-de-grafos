@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Grafos</title>
+    
+    <!-- 1. Enlazamos nuestra hoja de estilos -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 2. Importamos la librería vis.js -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+
+    <!-- 3. Definimos la estructura principal (Sidebar + Contenido) -->
+    <div class="app-container">
+        
+        <!-- BARRA LATERAL DE NAVEGACIÓN -->
+        <nav id="sidebar-nav">
+            <div class="nav-header">
+                <h3>Mi Proyecto</h3>
+            </div>
+            <a href="#" class="nav-link active" data-page="inicio">
+                <span>🏠</span> Introducción
+            </a>
+            <a href="#" class="nav-link" data-page="conceptos">
+                <span>📚</span> Conceptos Básicos
+            </a>
+            <a href="#" class="nav-link" data-page="algoritmo">
+                <span>🔬</span> Algoritmo y Grafo
+            </a>
+            <a href="#" class="nav-link" data-page="referencias">
+                <span>🔗</span> Referencias
+            </a>
+        </nav>
+
+        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <!-- Esta área estará vacía; JavaScript la rellenará -->
+        <main id="content-area">
+            <!-- El contenido se cargará aquí -->
+        </main>
+    </div>
+
+    <!-- 4. Enlazamos nuestro script de JavaScript -->
+    <script src="js/app.js" defer></script>
+</body>
+</html>
