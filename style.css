@@ -1,0 +1,48 @@
+/* css/style.css */
+
+/* Variables y Reset */
+:root {
+    --primary: #3b82f6;
+    --bg-sidebar: #ffffff;
+    --bg-main: #f1f5f9;
+    --text-main: #334155;
+}
+
+body { margin: 0; padding: 0; font-family: sans-serif; color: var(--text-main); height: 100vh; overflow: hidden; }
+.app-container { display: flex; height: 100vh; width: 100vw; }
+
+/* Sidebar */
+#sidebar-nav {
+    width: 250px; background: var(--bg-sidebar); border-right: 1px solid #e2e8f0;
+    display: flex; flex-direction: column; z-index: 2000;
+}
+.nav-header { padding: 20px; border-bottom: 1px solid #e2e8f0; }
+.nav-header h3 { margin: 0; color: var(--primary); }
+.nav-items { padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.nav-link {
+    text-decoration: none; color: #64748b; padding: 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 10px; transition: 0.2s;
+}
+.nav-link:hover, .nav-link.active { background: #eff6ff; color: var(--primary); }
+
+/* Content */
+#content-area { flex: 1; position: relative; background: var(--bg-main); }
+.view-section { display: none; width: 100%; height: 100%; position: absolute; top:0; left:0; }
+.view-section.active { display: block; }
+
+/* Map */
+#map-container { width: 100%; height: 100%; z-index: 1; background: #cbd5e1; }
+
+/* Controls Overlay */
+.controls-overlay {
+    position: absolute; top: 20px; right: 20px; width: 300px;
+    background: rgba(255,255,255,0.95); padding: 15px; border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 1000;
+}
+.control-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; }
+.slider-container { margin-bottom: 10px; display: flex; }
+#sim-slider { width: 100%; cursor: pointer; }
+.buttons-row { display: flex; gap: 5px; margin-bottom: 10px; }
+.control-btn { flex: 1; padding: 6px; cursor: pointer; border: 1px solid #cbd5e1; background: white; border-radius: 4px; }
+.control-btn:hover { background: #f1f5f9; }
+.step-info-box { background: #f8fafc; border-left: 3px solid var(--primary); padding: 8px; font-size: 0.85rem; color: #475569; max-height: 120px; overflow-y: auto; }

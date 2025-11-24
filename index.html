@@ -3,46 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorador de Grafos</title>
+    <title>Visualizador de Algoritmos</title>
     
-    <!-- 1. Enlazamos nuestra hoja de estilos -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
-    <!-- 2. Importamos la librería vis.js -->
-    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 3. Definimos la estructura principal (Sidebar + Contenido) -->
     <div class="app-container">
         
-        <!-- BARRA LATERAL DE NAVEGACIÓN -->
+        <!-- BARRA LATERAL -->
         <nav id="sidebar-nav">
             <div class="nav-header">
-                <h3>Mi Proyecto</h3>
+                <h3>Simulación Grafo</h3>
             </div>
-            <a href="#" class="nav-link active" data-page="inicio">
-                <span>🏠</span> Introducción
-            </a>
-            <a href="#" class="nav-link" data-page="conceptos">
-                <span>📚</span> Conceptos Básicos
-            </a>
-            <a href="#" class="nav-link" data-page="algoritmo">
-                <span>🔬</span> Algoritmo y Grafo
-            </a>
-            <a href="#" class="nav-link" data-page="referencias">
-                <span>🔗</span> Referencias
-            </a>
+            <div class="nav-items">
+                <a href="#" class="nav-link active" data-page="mapa">
+                    <span>🗺️</span> Visualización
+                </a>
+                <a href="#" class="nav-link" data-page="info">
+                    <span>ℹ️</span> Información
+                </a>
+            </div>
         </nav>
 
-        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
-        <!-- Esta área estará vacía; JavaScript la rellenará -->
+        <!-- ÁREA PRINCIPAL -->
         <main id="content-area">
-            <!-- El contenido se cargará aquí -->
+            
+            <!-- VISTA DEL MAPA -->
+            <div id="map-view" class="view-section active">
+                
+                <!-- Contenedor del Mapa -->
+                <div id="map-container"></div>
+
+                <!-- Panel de Controles Flotante -->
+                <div class="controls-overlay">
+                    <div class="control-header">
+                        <span id="step-indicator">Paso: 0 / 0</span>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <input type="range" id="sim-slider" min="0" max="100" value="0" disabled>
+                    </div>
+
+                    <div class="buttons-row">
+                        <button id="btn-prev" class="control-btn">⏮ Anterior</button>
+                        <button id="btn-play" class="control-btn">▶ Reproducir</button>
+                        <button id="btn-next" class="control-btn">Siguiente ⏭</button>
+                    </div>
+
+                    <div id="step-description" class="step-info-box">
+                        Cargando datos...
+                    </div>
+                </div>
+
+            </div>
+
         </main>
     </div>
 
-    <!-- 4. Enlazamos nuestro script de JavaScript -->
-    <script src="js/app.js" defer></script>
+    <!-- SCRIPTS -->
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- App Logic -->
+    <script src="app.js"></script>
 </body>
 </html>
