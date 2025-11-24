@@ -33,11 +33,11 @@ const STYLES = {
     }
 };
 
+let mapAndDataInitialized = false; // Flag para controlar la inicialización
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando App: Versión Corregida (Caminos y Conocimiento)...");
-    initMap();
+    console.log("Iniciando App: Carga diferida de mapa...");
     setupNavigation();
-    loadSimulationData();
     setupControls();
 });
 
@@ -52,9 +52,6 @@ function initMap() {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(mapInstance);
-    
-    // Asegurar renderizado correcto
-    setTimeout(() => mapInstance.invalidateSize(), 200);
 }
 
 // --- 2. CARGA DE DATOS ---
@@ -128,10 +125,19 @@ function drawInitialGraph(stepData) {
         mapNodes[nId] = circle;
     });
 
-    // Zoom automático
+    // Zoom automático, limitación de zoom-out y de paneo
     if (nodes.length > 0) {
         const group = new L.featureGroup(Object.values(mapNodes));
-        mapInstance.fitBounds(group.getBounds(), { padding: [50, 50] });
+        const bounds = group.getBounds();
+        mapInstance.fitBounds(bounds, { padding: [50, 50] });
+
+        // Después de ajustar, define el zoom mínimo para que el usuario no se aleje demasiado.
+        // Se permite un nivel de zoom-out respecto a la vista que encuadra todos los nodos.
+        const fitZoom = mapInstance.getZoom();
+        mapInstance.setMinZoom(fitZoom > 1 ? fitZoom - 1 : 0);
+
+        // Limita el área de paneo a los nodos con un poco de margen.
+        mapInstance.setMaxBounds(bounds.pad(0.1));
     }
 }
 
@@ -301,14 +307,44 @@ function setupControls() {
 
 function setupNavigation() {
     const nav = document.getElementById('sidebar-nav');
-    if(nav) {
-        nav.addEventListener('click', (e) => {
-            const link = e.target.closest('a.nav-link');
-            if(link && link.dataset.page === 'mapa') {
-                setTimeout(() => mapInstance.invalidateSize(), 100);
+    if (!nav) return;
+
+    nav.addEventListener('click', async (e) => { // Async para esperar la carga de datos
+        const link = e.target.closest('a.nav-link');
+        if (!link) return;
+        
+        e.preventDefault();
+
+        // Gestionar clases 'active' para links y vistas
+        const pageId = link.dataset.page;
+        if (!pageId) return;
+
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        const targetSection = document.getElementById(`${pageId}-view`);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // Lógica de inicialización y refresco para el mapa
+        if (pageId === 'mapa') {
+            // Si es la primera vez que se visita, inicializar mapa y datos
+            if (!mapAndDataInitialized) {
+                mapAndDataInitialized = true; // Marcar como inicializado para no repetir
+                initMap();
+                await loadSimulationData();
             }
-        });
-    }
+
+            // Refrescar el tamaño del mapa para asegurar que se vea bien
+            setTimeout(() => {
+                if (mapInstance) {
+                    mapInstance.invalidateSize();
+                }
+            }, 10);
+        }
+    });
 }
 
 function togglePlay() {
