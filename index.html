@@ -8,6 +8,10 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwZuNufKbNBKCdvKTzBc2Wa8S4JxDdwlCxdCgt1EiXsQqtGbDxA2O3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex-pseudocode@1.0.1/dist/katex-pseudocode.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -55,16 +59,68 @@
 
             <div id="motivacion-view" class="view-section">
                 <h1>Motivación</h1>
-                <p>Texto temporal para la sección de motivación. Explica aquí el porqué de este proyecto.</p>
+                <p>
+                    Texto temporal: Motivated by the implementation of a SARS-Cov-2 sewer surveillance system in Chile
+                    during the COVID-19 pandemic, we propose a set of mathematical and algorithmic
+                    tools that aim to identify the location of an outbreak under uncertainty in the network
+                    structure. Given an upper bound on the number of samples we can take on any
+                    given day, our framework allows us to detect an unknown infected node by adaptively
+                    sampling different network nodes on different days. Crucially, despite the uncertainty
+                    of the network, the method allows univocal detection of the infected node, albeit at
+                    an extra cost in time. This framework relies on a specific and well-chosen strategy that
+                    defines new nodes to test sequentially, with a heuristic that balances the granularity of
+                    the information obtained from the samples. We extensively tested our model in real
+                    and synthetic networks, showing that the uncertainty of the underlying graph only
+                    incurs a limited increase in the number of iterations, indicating that the methodology
+                    is applicable in practice.
+                </p>
             </div>
             
             <div id="algoritmo-view" class="view-section">
                 <h1>Algoritmo</h1>
-                <p>Texto temporal para la sección de algoritmo. Detalla aquí cómo funciona el algoritmo visualizado.</p>
+                <p>
+                    Aquí puedes escribir ecuaciones en formato LaTeX, por ejemplo, para definir la heurística utilizada.
+                    Usa <code>$...$</code> para ecuaciones en línea como \( h(n) = \alpha \cdot d(n) + \beta \cdot c(n) \),
+                    y <code>$$...$$</code> para bloques de ecuación:
+                </p>
+                $$ L(u, v) = \sqrt{(x_u - x_v)^2 + (y_u - y_v)^2} $$
+                
+                <h3>Greedy Sampling Algorithm</h3>
+                <p>
+                    El siguiente pseudo-código describe el método de muestreo utilizado.
+                </p>
+                <div id="pseudocode-block" class="pseudocode-container">
+\begin{algorithmic}[1]
+\STATE \textbf{Input:} Grafo acíclico dirigido $G = (N,F)$ con raíz $r$, un número natural $k$ y un número natural $B$.
+\STATE \textbf{Output:} Un conjunto $S$ de $k+1$ nodos para muestrear con $r \in S$.
+\vspace{0.2em}
+\STATE $S \leftarrow \{r\}$
+\WHILE{$|S| < k+1$}
+    \STATE $v_{best} \leftarrow \text{null}$
+    \STATE $J_{max} \leftarrow -1$
+    \FOR{\text{cada nodo } v \in N \setminus S}
+        \STATE $J_{new} \leftarrow |J_v(G) \setminus \bigcup_{u \in S} J_u(G)|$
+        \IF{$J_{new} > J_{max}$}
+            \STATE $v_{best} \leftarrow v$
+            \STATE $J_{max} \leftarrow J_{new}$
+        \ENDIF
+    \ENDFOR
+    \IF{$v_{best} \neq \text{null}$}
+        \STATE $S \leftarrow S \cup \{v_{best}\}$
+    \ELSE
+        \STATE \textbf{break}
+    \ENDIF
+\ENDWHILE
+\RETURN S
+\end{algorithmic}
+                </div>
+                <p>
+                    Como se muestra en el algoritmo, el método es eficiente.
+                </p>
             </div>
 
             <!-- VISTA DEL MAPA -->
-            <div id="map-view" class="view-section">
+            <div id="mapa-view" class="view-section">
                 
                 <!-- Contenedor del Mapa -->
                 <div id="map-container"></div>
@@ -113,6 +169,31 @@
     <!-- SCRIPTS -->
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- KaTeX and extensions -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTadx5StBifpxWLf+lltiGnl/L1abC+//MFTKesMbO3P/BlOQAU/foDSxk" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex-pseudocode@1.0.1/dist/katex-pseudocode.min.js" integrity="sha384-8hD/341rAoTrSnyo/b0X8xLh92hAXs3QyAhWBNyZX/o6j08QzG1aVRs9fBCI/vTS" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GpZv7MmrldpdDrAsXyDqCCbFXm4gt1cmTBdHnI2qD6C4ns6M" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+
+            var pseudocodeBlock = document.getElementById('pseudocode-block');
+            if (pseudocodeBlock) {
+                pseudocode.renderElement(pseudocodeBlock, { throwOnError: false });
+            }
+        });
+    </script>
+
     <!-- App Logic -->
     <script src="app.js"></script>
 </body>
