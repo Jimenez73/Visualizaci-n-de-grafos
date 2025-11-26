@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwZuNufKbNBKCdvKTzBc2Wa8S4JxDdwlCxdCgt1EiXsQqtGbDxA2O3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex-pseudocode@1.0.1/dist/katex-pseudocode.min.css">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js"
+        integrity="sha512-EKW5YvKU3hpyyOcN6jQnAxO/L8gts+YdYV6Yymtl8pk9YlYFtqJgihORuRoBXK8/cOIlappdU6Ms8KdK6yBCgA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -89,31 +96,33 @@
                 <p>
                     El siguiente pseudo-código describe el método de muestreo utilizado.
                 </p>
-                <div id="pseudocode-block" class="pseudocode-container">
-\begin{algorithmic}[1]
-\STATE \textbf{Input:} Grafo acíclico dirigido $G = (N,F)$ con raíz $r$, un número natural $k$ y un número natural $B$.
-\STATE \textbf{Output:} Un conjunto $S$ de $k+1$ nodos para muestrear con $r \in S$.
-\vspace{0.2em}
-\STATE $S \leftarrow \{r\}$
-\WHILE{$|S| < k+1$}
-    \STATE $v_{best} \leftarrow \text{null}$
-    \STATE $J_{max} \leftarrow -1$
-    \FOR{\text{cada nodo } v \in N \setminus S}
-        \STATE $J_{new} \leftarrow |J_v(G) \setminus \bigcup_{u \in S} J_u(G)|$
-        \IF{$J_{new} > J_{max}$}
-            \STATE $v_{best} \leftarrow v$
-            \STATE $J_{max} \leftarrow J_{new}$
-        \ENDIF
-    \ENDFOR
-    \IF{$v_{best} \neq \text{null}$}
-        \STATE $S \leftarrow S \cup \{v_{best}\}$
-    \ELSE
-        \STATE \textbf{break}
-    \ENDIF
-\ENDWHILE
-\RETURN S
-\end{algorithmic}
-                </div>
+                <pre id="greedy_algorithm" class="pseudocode">
+                    % This quicksort algorithm is extracted from Chapter 7, Introduction to Algorithms (3rd edition)
+                    \begin{algorithm}
+                    \caption{Greedy Sampling Algorithm}
+                    \begin{algorithmic}
+                    \INPUT A directed acyclic graph $G = (N,F)$ with root $r$, a natural number $k$ and a natural number $B$.
+                    \OUTPUT A set $S$ of $k+1$ nodes to sample with $S \ni r$
+                    \STATE $S = \{r\}$
+                    \WHILE{$s$}
+                        \STATE aux = 1
+                        \STATE auxv = $-\infty$
+                        \FOR{$v$ in $N \setminus S$}
+                            \IF{$B \geq |J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$}
+                                \STATE aux = $v$
+                                \STATE auxv = $|J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$
+                            \ENDIF
+                        \ENDFOR
+                        \IF{aux $\neq -1$}
+                            $S = S \cup \{\text{aux}\}$
+                        \ELSE
+                            break
+                        \ENDIF
+                    \ENDWHILE
+                    \RETURN $S$
+                    \end{algorithmic}
+                    \end{algorithm}
+                </pre>
                 <p>
                     Como se muestra en el algoritmo, el método es eficiente.
                 </p>
@@ -171,27 +180,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
     <!-- KaTeX and extensions -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTadx5StBifpxWLf+lltiGnl/L1abC+//MFTKesMbO3P/BlOQAU/foDSxk" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex-pseudocode@1.0.1/dist/katex-pseudocode.min.js" integrity="sha384-8hD/341rAoTrSnyo/b0X8xLh92hAXs3QyAhWBNyZX/o6j08QzG1aVRs9fBCI/vTS" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GpZv7MmrldpdDrAsXyDqCCbFXm4gt1cmTBdHnI2qD6C4ns6M" crossorigin="anonymous"></script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false},
-                    {left: '\\(', right: '\\)', display: false},
-                    {left: '\\[', right: '\\]', display: true}
-                ],
-                throwOnError: false
-            });
-
-            var pseudocodeBlock = document.getElementById('pseudocode-block');
-            if (pseudocodeBlock) {
-                pseudocode.renderElement(pseudocodeBlock, { throwOnError: false });
-            }
-        });
+        pseudocode.renderClass("pseudocode");
     </script>
 
     <!-- App Logic -->
