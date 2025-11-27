@@ -1,0 +1,40 @@
+{
+  "structure": {
+    "nodes": [
+      { "id": 1 },
+      { "id": 2 },
+      { "id": 3 },
+      { "id": 4 },
+      { "id": 5 },
+      { "id": 6 },
+      { "id": 7 },
+      { "id": 8 }
+    ],
+    "edges": [
+      { "from": 2, "to": 1 },
+      { "from": 3, "to": 2 },
+      { "from": 4, "to": 2 },
+      { "from": 4, "to": 1 },
+      { "from": 5, "to": 1 },
+      { "from": 6, "to": 3 },
+      { "from": 6, "to": 2 },
+      { "from": 7, "to": 3 },
+      { "from": 8, "to": 4 },
+      { "from": 8, "to": 5 }
+    ]
+  },
+  "frames": [
+    {
+      "step": 0,
+      "lineCode": 1,
+      "description": "Estado Inicial",
+      "updates": [ { "id": 1, "color": "#81c784" } ]
+    },
+    {
+      "step": 1,
+      "lineCode": 5,
+      "description": "Explorando Rama Izquierda",
+      "updates": [ { "id": 2, "color": "#ffb74d" } ]
+    }
+  ]
+}

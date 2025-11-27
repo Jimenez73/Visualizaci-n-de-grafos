@@ -8,14 +8,12 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
-    <!-- KaTeX CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-KiWOvVjnN8qwZuNufKbNBKCdvKTzBc2Wa8S4JxDdwlCxdCgt1EiXsQqtGbDxA2O3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex-pseudocode@1.0.1/dist/katex-pseudocode.min.css">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.7/katex.min.js"
-        integrity="sha512-EKW5YvKU3hpyyOcN6jQnAxO/L8gts+YdYV6Yymtl8pk9YlYFtqJgihORuRoBXK8/cOIlappdU6Ms8KdK6yBCgA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
+    <!-- Pseudocode JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.css">
     <script src="https://cdn.jsdelivr.net/npm/pseudocode@latest/build/pseudocode.min.js"></script>
 
@@ -29,14 +27,11 @@
         <!-- BARRA LATERAL -->
         <nav id="sidebar-nav">
             <div class="nav-header">
-                <h3>Simulación Grafo</h3>
+                <h3>Búsqueda en redes</h3>
             </div>
             <div class="nav-items">
-                <a href="#" class="nav-link active" data-page="bienvenida">
-                    <span>👋</span> Bienvenida
-                </a>
-                <a href="#" class="nav-link" data-page="motivacion">
-                    <span>💡</span> Motivación
+                <a href="#" class="nav-link active" data-page="introduccion">
+                    <span>👋</span> Introducción
                 </a>
                 <a href="#" class="nav-link" data-page="algoritmo">
                     <span>⚙️</span> Algoritmo
@@ -59,73 +54,69 @@
         <!-- ÁREA PRINCIPAL -->
         <main id="content-area">
             
-            <div id="bienvenida-view" class="view-section active">
-                <h1>Bienvenida</h1>
-                <p>Texto temporal para la sección de bienvenida. Aquí puedes añadir una introducción al proyecto.</p>
-            </div>
-
-            <div id="motivacion-view" class="view-section">
-                <h1>Motivación</h1>
+            <div id="introduccion-view" class="view-section active">
+                <h1>Introducción</h1>
                 <p>
-                    Texto temporal: Motivated by the implementation of a SARS-Cov-2 sewer surveillance system in Chile
-                    during the COVID-19 pandemic, we propose a set of mathematical and algorithmic
-                    tools that aim to identify the location of an outbreak under uncertainty in the network
-                    structure. Given an upper bound on the number of samples we can take on any
-                    given day, our framework allows us to detect an unknown infected node by adaptively
-                    sampling different network nodes on different days. Crucially, despite the uncertainty
-                    of the network, the method allows univocal detection of the infected node, albeit at
-                    an extra cost in time. This framework relies on a specific and well-chosen strategy that
-                    defines new nodes to test sequentially, with a heuristic that balances the granularity of
-                    the information obtained from the samples. We extensively tested our model in real
-                    and synthetic networks, showing that the uncertainty of the underlying graph only
-                    incurs a limited increase in the number of iterations, indicating that the methodology
-                    is applicable in practice.
+                    Bienvenido al visualizador de algoritmos de búsqueda en redes.
                 </p>
             </div>
             
             <div id="algoritmo-view" class="view-section">
                 <h1>Algoritmo</h1>
                 <p>
-                    Aquí puedes escribir ecuaciones en formato LaTeX, por ejemplo, para definir la heurística utilizada.
-                    Usa <code>$...$</code> para ecuaciones en línea como \( h(n) = \alpha \cdot d(n) + \beta \cdot c(n) \),
-                    y <code>$$...$$</code> para bloques de ecuación:
+                    Se defenen algunos conceptos claves:
                 </p>
-                $$ L(u, v) = \sqrt{(x_u - x_v)^2 + (y_u - y_v)^2} $$
-                
+                <p>
+                    Hijos únicos de un nodo $v$
+                    $$ A_v = N(T_v) \setminus \bigcup_{u \in S_v} N(T_u) $$
+                </p>
+                <p>
+                    Número de infecciones en $A_v$                   
+                    $$ j_v = i_v - \sum_{u \in C_v} i_u $$
+                </p>
+            
                 <h3>Greedy Sampling Algorithm</h3>
-                <p>
-                    El siguiente pseudo-código describe el método de muestreo utilizado.
-                </p>
-                <pre id="greedy_algorithm" class="pseudocode">
-                    % This quicksort algorithm is extracted from Chapter 7, Introduction to Algorithms (3rd edition)
-                    \begin{algorithm}
-                    \caption{Greedy Sampling Algorithm}
-                    \begin{algorithmic}
-                    \INPUT A directed acyclic graph $G = (N,F)$ with root $r$, a natural number $k$ and a natural number $B$.
-                    \OUTPUT A set $S$ of $k+1$ nodes to sample with $S \ni r$
-                    \STATE $S = \{r\}$
-                    \WHILE{$s$}
-                        \STATE aux = 1
-                        \STATE auxv = $-\infty$
-                        \FOR{$v$ in $N \setminus S$}
-                            \IF{$B \geq |J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$}
-                                \STATE aux = $v$
-                                \STATE auxv = $|J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$
-                            \ENDIF
-                        \ENDFOR
-                        \IF{aux $\neq -1$}
-                            $S = S \cup \{\text{aux}\}$
-                        \ELSE
-                            break
-                        \ENDIF
-                    \ENDWHILE
-                    \RETURN $S$
-                    \end{algorithmic}
-                    \end{algorithm}
-                </pre>
-                <p>
-                    Como se muestra en el algoritmo, el método es eficiente.
-                </p>
+                
+                <div style="margin-bottom: 10px; padding: 10px; background: #f1f5f9; border-radius: 8px;">
+                    <button id="algo-btn-prev">⏮ Anterior</button>
+                    <button id="algo-btn-next">Siguiente ⏭</button>
+                    <span id="algo-step-desc" style="margin-left: 10px; font-weight: bold;">Inicio</span>
+                </div>
+
+                <div style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <pre id="greedy_algorithm" class="pseudocode">
+\begin{algorithm}
+\caption{Greedy Sampling Algorithm}
+\begin{algorithmic}
+\INPUT A directed acyclic graph $G = (N,F)$ with root $r$, a natural number $k$ and a natural number $B$.
+\OUTPUT A set $S$ of $k+1$ nodes to sample with $S \ni r$
+\STATE $S = \{r\}$
+\WHILE{$|S| \leq k+1$}
+    \STATE aux = 1
+    \STATE auxv = $-\infty$
+    \FOR{$v$ in $N \setminus S$}
+        \IF{$B \geq |J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$}
+            \STATE aux = $v$
+            \STATE auxv = $|J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$
+        \ENDIF
+    \ENDFOR
+    \IF{aux $\neq -1$}
+        \STATE $S = S \cup \{\text{aux}\}$
+    \ELSE
+        \STATE break
+    \ENDIF
+\ENDWHILE
+\RETURN $S$
+\end{algorithmic}
+\end{algorithm}
+                        </pre>
+                    </div>
+
+                    <div style="flex: 1;">
+                        <div id="grafo-container" style="width: 100%; height: 500px; border: 1px solid #ddd; background: #fff;"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- VISTA DEL MAPA -->
@@ -159,32 +150,47 @@
 
             <div id="random-view" class="view-section">
                 <h1>Random</h1>
-                <p>Texto temporal para la sección de random. Describe qué se visualiza en esta sección.</p>
+                <p>Visualización en un grafo random???</p>
             </div>
 
             <div id="estadisticas-view" class="view-section">
                 <h1>Estadísticas</h1>
-                <p>Texto temporal para la sección de estadísticas. Muestra aquí gráficos o datos relevantes.</p>
+                <p>Imágenes del paper con su explicación y eso.</p>
             </div>
 
             <div id="referencias-view" class="view-section">
                 <h1>Referencias</h1>
-                <p>Texto temporal para la sección de referencias. Lista aquí las fuentes y librerías utilizadas.</p>
+                <p>Links</p>
             </div>
 
         </main>
     </div>
 
     <!-- SCRIPTS -->
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-    <!-- KaTeX and extensions -->
-    <script>
-        pseudocode.renderClass("pseudocode");
-    </script>
 
+    <!-- Network JS -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    
     <!-- App Logic -->
-    <script src="app.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/vis_leaflet.js"></script>
+    <script src="js/vis_algorithm.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false}
+                ],
+                throwOnError : false
+            });
+        });
+    </script>
 </body>
 </html>
