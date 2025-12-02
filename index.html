@@ -39,9 +39,6 @@
                 <a href="#" class="nav-link" data-page="mapa">
                     <span>🗺️</span> Visualización
                 </a>
-                <a href="#" class="nav-link" data-page="random">
-                    <span>🎲</span> Random
-                </a>
                 <a href="#" class="nav-link" data-page="estadisticas">
                     <span>📊</span> Estadísticas
                 </a>
@@ -55,37 +52,214 @@
         <main id="content-area">
             
             <div id="introduccion-view" class="view-section active">
-                <h1>Introducción</h1>
-                <p>
-                    Bienvenido al visualizador de algoritmos de búsqueda en redes.
-                </p>
-            </div>
-            
-            <div id="algoritmo-view" class="view-section">
-                <h1>Algoritmo</h1>
-                <p>
-                    Se defenen algunos conceptos claves:
-                </p>
-                <p>
-                    Hijos únicos de un nodo $v$
-                    $$ A_v = N(T_v) \setminus \bigcup_{u \in S_v} N(T_u) $$
-                </p>
-                <p>
-                    Número de infecciones en $A_v$                   
-                    $$ j_v = i_v - \sum_{u \in C_v} i_u $$
-                </p>
-            
-                <h3>Greedy Sampling Algorithm</h3>
-                
-                <div style="margin-bottom: 10px; padding: 10px; background: #f1f5f9; border-radius: 8px;">
-                    <button id="algo-btn-prev">⏮ Anterior</button>
-                    <button id="algo-btn-next">Siguiente ⏭</button>
-                    <span id="algo-step-desc" style="margin-left: 10px; font-weight: bold;">Inicio</span>
+    
+                <div class="intro-hero">
+                    <h1>Bienvenido al Visualizador de Búsqueda en Redes con incertidumbre</h1>
+                    <p class="intro-subtitle">
+                        Explora cómo los algoritmos de muestreo greedy identifican nodos críticos en grafos dirigidos acíclicos.
+                    </p>
                 </div>
 
-                <div style="display: flex; gap: 20px;">
-                    <div style="flex: 1;">
-                        <pre id="greedy_algorithm" class="pseudocode">
+                <div class="intro-section motivation-box">
+                    <h2>💡 Motivación</h2>
+                    <p>
+                        Durante el brote de COVID-19, la vigilancia de aguas servidas se convirtió en una herramienta crucial para detectar y monitorear la propagación del virus en comunidades.
+                        Sin embargo, las redes de alcantarillado son complejas y a menudo inciertas, lo que dificulta la identificación rápida de fuentes de infección.
+                        Limitado por recursos, es esencial desarrollar estrategias eficientes para muestrear estas redes y localizar nodos infectados con el menor número de exploraciones posibles, tanto en cantidad de muestras como en tiempo.
+                    </p>
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="intro-section news-section">
+                    <h2>📰 Noticias y Contexto</h2>
+
+                    <div class="news-card reverse">
+                        <div class="news-content">
+                            <h3>Exitoso plan piloto en Chillán: Detectan presencia de COVID-19 en aguas servidas</h3>
+                            <p>
+                                En los laboratorios de la Universidad de Concepción se obtuvieron los primeros resultados positivos del análisis de aguas servidas en Chillán para la detección temprana de posibles focos de COVID-19. 
+                            </p>
+                            <a href="https://youtu.be/Hd2uDd3VINc?si=vdgtmpsGvaoGK0IX" target="_blank" class="read-more-link">
+                                Leer noticia completa
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="news-visual">
+                            <div class="news-video">
+                                <iframe 
+                                    width="560" 
+                                    height="315"
+                                    src="https://www.youtube.com/embed/Hd2uDd3VINc?si=gOGjHqunt42OyNE9"
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-content">
+                            <h3>Innovador proyecto que analizó aguas residuales mostró las variantes que más circulan en Chile, cómo es capaz de detener brotes y anticipar hasta en cinco días aparición de síntomas</h3>
+                            <p>
+                                Descripción breve + link
+                            </p>
+                            <a href="https://www.latercera.com/que-pasa/noticia/innovador-proyecto-que-analizo-aguas-residuales-mostro-las-variantes-que-mas-circulan-en-chile-como-es-capaz-de-detener-brotes-y-anticipar-hasta-en-cinco-dias-aparicion-de-sintomas/Q72PT6YQSJBTRGIABZQUCCVCCQ/" target="_blank" class="read-more-link">
+                                Leer noticia completa
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="news-visual">
+                            <div class="placeholder-image">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                <span>Imagen</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="news-card reverse">
+                        <div class="news-content">
+                            <h3>¿Para qué sirve el monitoreo de aguas residuales?</h3>
+                            <p>
+                                Descripción breve + link
+                            </p>
+                            <a href="https://www.dw.com/es/virus-y-bacterias-para-qué-sirve-el-monitoreo-de-aguas-residuales/a-71126749" target="_blank" class="read-more-link">
+                                Leer noticia completa
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="news-visual">
+                            <div class="placeholder-image">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5">
+                                    <path d="M18 20V10"></path>
+                                    <path d="M12 20V4"></path>
+                                    <path d="M6 20v-6"></path>
+                                </svg>
+                                <span>Imagen</span>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="intro-section research-box">
+                    <h2>🔬 Trabajo e Investigación</h2>
+                    <p>Este proyecto se basa en los siguientes pilares de investigación:</p>
+                    <ul class="custom-list">
+                        <li>
+                            <strong>Muestreo en Grafos:</strong> Técnicas para estimar propiedades de una red sin observarla completamente.
+                        </li>
+                        <li>
+                            <strong>Inferencia Bayesiana:</strong> Uso de probabilidad para actualizar el conocimiento sobre los nodos vecinos.
+                        </li>
+                        <li>
+                            <strong>Optimización Submodular:</strong> Garantías teóricas de que la estrategia greedy es cercana a la óptima.
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div id="algoritmo-view" class="view-section">
+                <h1>Algoritmo Greedy</h1>
+
+                <div class="algo-theory-section">
+                    <div class="theory-card">
+                        <h3>🎯 Objetivo</h3>
+                        <p>
+                            Una estrategia que minimice el número de día para detectar un brote en una red de alcantarillado, bajo un presupuesto limitado de exploraciones.
+                        </p>
+                    </div>
+                    <div class="theory-card">
+                        <h3>🧠 Asunciones</h3>
+                        <ul>
+                            <li>La red se represenseta con un grafo dirigido $T = (V,E)$ con raíz en la planta de tratamiento de aguas servidas.</li>
+                            <li>Hay un solo nodo infectado.</li>
+                            <li>El presupuesto $B$ limita las exploraciones.</li>
+                        </ul>
+                    </div>
+                    <div class="theory-card">
+                        <h3>👀 Observaciones</h3>
+                        <p>
+                            ---
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="algo-example-section">
+                    <h2>Ejemplo Conceptual</h2>
+                    <p>Visualicemos la correspondencia entre la exploración del grafo y la toma de decisiones.</p>
+                    
+                    <div class="algo-controls simple-centered-controls">
+    
+                    <div class="controls-top-row">
+                        <button id="ex-btn-prev" class="control-btn fixed-btn">⏮ Anterior</button>
+                        <div class="step-display">
+                            Paso <span id="ex-step-number">0</span>
+                        </div>
+                        <button id="ex-btn-next" class="control-btn fixed-btn">Siguiente ⏭</button>
+                    </div>
+
+                    <div class="controls-bottom-row">
+                        <span id="ex-step-desc">Cargando descripción...</span>
+                    </div>
+
+                </div>
+
+                    <div class="example-grid">
+                        <div class="example-box">
+                            <h4>Grafo de Búsqueda</h4>
+                            <div id="ex-graph-container" style="height: 300px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px;"></div>
+                        </div>
+
+                        <div class="example-box">
+                            <h4>Árbol de Decisión</h4>
+                            <div id="ex-tree-container" style="height: 300px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="algo-interactive-section">
+                    <h2>Visualización del Algoritmo</h2>
+                    
+                    <div class="algo-controls simple-centered-controls">
+                        <div class="controls-top-row">
+                            <button id="algo-btn-prev" class="control-btn fixed-btn">Anterior</button>
+                            <div class="step-display">
+                                Paso <span id="algo-step-number">0</span>
+                            </div>
+                            <button id="algo-btn-next" class="control-btn fixed-btn">Siguiente</button>
+                        </div>
+
+                        <div class="controls-bottom-row">
+                            <span id="algo-step-desc">Estado Inicial</span>
+                        </div>
+                    </div>
+
+                    <div class="interactive-grid">
+                        <div class="code-column">
+                            <pre id="greedy_algorithm" class="pseudocode">
 \begin{algorithm}
 \caption{Greedy Sampling Algorithm}
 \begin{algorithmic}
@@ -96,9 +270,10 @@
     \STATE aux = 1
     \STATE auxv = $-\infty$
     \FOR{$v$ in $N \setminus S$}
-        \IF{$B \geq |J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$}
+        \STATE $J = |J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$
+        \IF{auxv $\leq J \leq B$}
             \STATE aux = $v$
-            \STATE auxv = $|J_v(G) \setminus \bigcup_{u \in (S \setminus \{r\})} J_u(G)|$
+            \STATE auxv = $J$
         \ENDIF
     \ENDFOR
     \IF{aux $\neq -1$}
@@ -110,12 +285,46 @@
 \RETURN $S$
 \end{algorithmic}
 \end{algorithm}
-                        </pre>
-                    </div>
+                            </pre>
+                            <div id="algo-variables" class="variables-panel">
+                                <h3>🔍 Monitor de Variables</h3>
+                                <div class="vars-grid">
+                                    
+                                    <div class="var-card">
+                                        <span class="var-name">S</span>
+                                        <span id="var-S" class="var-value">{}</span>
+                                    </div>
 
-                    <div style="flex: 1;">
-                        <div id="grafo-container" style="width: 100%; height: 500px; border: 1px solid #ddd; background: #fff;"></div>
+                                    <div class="var-card">
+                                        <span class="var-name">aux</span>
+                                        <span id="var-aux" class="var-value">NULL</span>
+                                    </div>
+
+                                    <div class="var-card">
+                                        <span class="var-name">auxv</span>
+                                        <span id="var-auxv" class="var-value">NULL</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="vis-column">
+                            <div id="grafo-container"></div>
+                        </div>
                     </div>
+                </div>
+
+                <hr class="section-divider">
+
+                <div class="algo-efficiency-section">
+                    <h2>Eficiencia Computacional</h2>
+                    <div class="efficiency-box">
+                        $$ O(\Delta \cdot \log(n)) $$
+                    </div>
+                    <p>
+                        Donde $\Delta$ es el grado máximo del grafo, $k$ el presupuesto y $n$ el número de nodos.
+                    </p>
                 </div>
             </div>
 
@@ -148,21 +357,165 @@
 
             </div>
 
-            <div id="random-view" class="view-section">
-                <h1>Random</h1>
-                <p>Visualización en un grafo random???</p>
-            </div>
-
             <div id="estadisticas-view" class="view-section">
-                <h1>Estadísticas</h1>
-                <p>Imágenes del paper con su explicación y eso.</p>
+                <div class="intro-hero">
+                    <h1>Resultados Experimentales</h1>
+                    <p class="intro-subtitle">
+                        Evaluación del desempeño del algoritmo propuesto frente a métodos tradicionales en redes de alcantarillado sintéticas y reales.
+                    </p>
+                </div>
+
+                <div class="results-container">
+
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h3>Distribución de Tiempos de Detección</h3>
+                            <span class="badge-experiment">Experimento 1</span>
+                        </div>
+                        
+                        <div class="chart-wrapper">
+                            <img src="assets/grafico_histograma.png" alt="Histograma de resultados" class="zoomable-image">
+                            <div class="zoom-hint">🔍 Clic para ampliar</div>
+                        </div>
+
+                        <div class="analysis-box">
+                            <h4>💡 Interpretación de los datos</h4>
+                            <p>
+                                La figura muestra la distribución del número de días necesarios para detectar el brote.
+                                Se comparan tres métricas (Media, Percentil 90 y Máximo) variando el número de muestras ($k=1, 5, 10$).
+                            </p>
+                            <ul class="stat-list">
+                                <li>
+                                    <strong>Reducción de Varianza:</strong> Al aumentar el número de muestras a 10 (color naranja), la dispersión de los días disminuye significativamente comparado con una sola muestra (azul).
+                                </li>
+                                <li>
+                                    <strong>Convergencia:</strong> El percentil 90 se estabiliza cerca del día 7.5 con mayor muestreo, indicando una detección más robusta.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h3>Comparativa de Presupuesto vs. Precisión</h3>
+                            <span class="badge-experiment">Experimento 2</span>
+                        </div>
+                        
+                        <div class="chart-wrapper">
+                            <div class="placeholder-chart">
+                                <span>(Imagen Tabla/Gráfico 2)</span>
+                            </div>
+                        </div>
+
+                        <div class="analysis-box">
+                            <h4>💡 Interpretación de los datos</h4>
+                            <p>
+                                Se observa que la relación costo-beneficio alcanza su punto óptimo con un presupuesto de $B=15$.
+                                Más allá de este punto, la ganancia marginal en precisión es despreciable.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="image-modal" class="modal">
+                    <span class="close-modal">&times;</span>
+                    <img class="modal-content" id="img01">
+                    <div id="caption"></div>
+                </div>
             </div>
 
             <div id="referencias-view" class="view-section">
                 <h1>Referencias</h1>
-                <p>Links</p>
-            </div>
 
+                <div class="references-list">
+                    
+                    <div class="reference-card">
+                        <h3>Identifying outbreaks in sewer networks: An adaptive sampling scheme under network’s uncertainty</h3>
+                        <div class="ref-grid">
+                            <span class="ref-label">Autores</span>
+                            <span class="ref-value">José Baboun, Isabelle S. Beaudry, Luis M. Castro, Felipe Gutierrez, Alejandro Jara, Benjamin Rubio, José Verschae</span>
+
+                            <span class="ref-label">Publicado</span>
+                            <span class="ref-value">2024</span>
+
+                            <span class="ref-label">URL</span>
+                            <a href="https://www.pnas.org/doi/full/10.1073/pnas.2316616121" class="ref-link" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                https://www.pnas.org/doi/full/10.1073/pnas.2316616121
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3>Searching for infections: algorithms for multiple sampling on trees and planar graphs</h3>
+                        <div class="ref-grid">
+                            <span class="ref-label">Autores</span>
+                            <span class="ref-value">Rubio Orellana, Benjamín Eduardo</span>
+
+                            <span class="ref-label">Publicado</span>
+                            <span class="ref-value">2023</span>
+
+                            <span class="ref-label">URL</span>
+                            <a href="https://repositorio.uc.cl/handle/11534/75255" class="ref-link" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                https://repositorio.uc.cl/handle/11534/75255
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3>Complexity, lower bounds, and algorithms for searching infected nodes in uncertain trees</h3>
+                        <div class="ref-grid">
+                            <span class="ref-label">Autores</span>
+                            <span class="ref-value">Baboun Larach, José</span>
+
+                            <span class="ref-label">Publicado</span>
+                            <span class="ref-value">2023</span>
+
+                            <span class="ref-label">URL</span>
+                            <a href="https://repositorio.uc.cl/handle/11534/75114" class="ref-link" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                https://repositorio.uc.cl/handle/11534/75114
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="reference-card">
+                        <h3>Covid-Sewage-Search</h3>
+                        <div class="ref-grid">
+                            <span class="ref-label">Autores</span>
+                            <span class="ref-value"></span>
+
+                            <span class="ref-label">Publicado</span>
+                            <span class="ref-value">2023</span>
+
+                            <span class="ref-label">URL</span>
+                            <a href="https://github.com/josebaboun/Covid-Sewage-Search" class="ref-link" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-bottom; margin-right: 4px;">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                https://github.com/josebaboun/Covid-Sewage-Search
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </main>
     </div>
 
@@ -178,6 +531,7 @@
     <script src="js/state.js"></script>
     <script src="js/vis_leaflet.js"></script>
     <script src="js/vis_algorithm.js"></script>
+    <script src="js/vis_example.js"></script>
     <script src="js/main.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

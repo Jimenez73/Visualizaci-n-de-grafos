@@ -26,6 +26,7 @@ function setupNavigation() {
             } 
             else if (pageId === 'algoritmo') {
                 initAlgorithmView();
+                initExampleView()
             }
         });
     });
@@ -85,4 +86,7 @@ function setupGlobalControls() {
         const prev = AppState.algorithm.currentFrame - 1;
         updateAlgorithmVis(prev);
     });
+
+    document.getElementById('ex-btn-next')?.addEventListener('click', nextExampleStep);
+    document.getElementById('ex-btn-prev')?.addEventListener('click', prevExampleStep);
 }
