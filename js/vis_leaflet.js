@@ -1,14 +1,11 @@
-// js/vis_leaflet.js
-
-// --- CONFIGURACIÓN ---
-const ZOOM_UMBRAL = 16; // Nivel de zoom donde aparecen los nodos de fondo
+// --- CONFIGURACIÓN DEL MAPA ---
+const ZOOM_UMBRAL = 16;     // Nivel de zoom donde aparecen los nodos de fondo
 const RADIO_IMPORTANTE = 5; // Tamaño fijo para WTP, Infectado, Seleccionados
 const RADIO_FONDO = 5;      // Tamaño fijo para el resto
 
 // --- ESTILOS BASE ---
 const LEAFLET_STYLES = {
     node: {
-        // ... (tus estilos de nodos se mantienen igual) ...
         default:   { color: '#64748b', fillColor: '#64748b', fillOpacity: 0.7, weight: 1 },
         wtp:       { color: '#2563eb', fillColor: '#2563eb', fillOpacity: 1.0, weight: 2 },
         infected:  { color: '#b91c1c', fillColor: '#b91c1c', fillOpacity: 1.0, weight: 2 },
@@ -24,11 +21,11 @@ const LEAFLET_STYLES = {
     }
 };
 
-// --- INICIALIZACIÓN ---
+// --- INICIALIZACIÓN DEL MAPA ---
 function initLeafletMap() {
     if (AppState.leaflet.instance) return;
 
-    // Vista inicial centrada en Concepción
+    // Vista inicial centrada en SPPD
     AppState.leaflet.instance = L.map('map-container').setView([-36.82, -73.05], 13);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
@@ -44,10 +41,11 @@ function initLeafletMap() {
     loadLeafletData();
 }
 
+// --- CARGA DE DATOS ---
 async function loadLeafletData() {
     try {
         // Truco del timestamp para evitar caché
-        const res = await fetch(`data/simulation_data.json?t=${new Date().getTime()}`);
+        const res = await fetch(`data/simulation_data.json?t=${new Date().getTime()}`); // Se puede quitar el truco una vez se tenga todo listo (lo dejo para desarrollo)
         if (!res.ok) throw new Error("No se pudo cargar el JSON");
         
         AppState.leaflet.steps = await res.json();
@@ -72,6 +70,7 @@ async function loadLeafletData() {
     }
 }
 
+// --- DIBUJO DEL GRAFO BASE ---
 function drawLeafletBase(stepData) {
     const map = AppState.leaflet.instance;
 
@@ -89,15 +88,14 @@ function drawLeafletBase(stepData) {
         const sId = String(e.source);
         const tId = String(e.target);
         
-        // --- AQUÍ ESTÁ EL CAMBIO ---
         // Verificamos si el JSON trajo la geometría detallada
         let pathCoordinates = [];
 
+        // Si no, usamos las posiciones de los nodos
         if (e.geometry && e.geometry.length > 0) {
-            // ¡Usamos la forma real de la tubería!
             pathCoordinates = e.geometry; 
-        } else {
-            // Fallback: Línea recta si no hay datos (por si acaso)
+        } 
+        else {
             const nodeS = nodes.find(n => String(n.id) === sId);
             const nodeT = nodes.find(n => String(n.id) === tId);
             if (nodeS && nodeT) {
@@ -114,10 +112,9 @@ function drawLeafletBase(stepData) {
     });
 
     // 2. Nodos
-    // Los creamos todos, pero su visibilidad se controlará dinámicamente
+    // Los creamos todos, pero su visibilidad se controlará dinámicamente en 'refrescarEstilosNodos'
     nodes.forEach(n => {
         const nId = String(n.id);
-        // Creamos con estilo default, luego 'refrescarEstilosNodos' lo arreglará
         const circle = L.circleMarker([n.lat, n.lon], LEAFLET_STYLES.node.default).addTo(map);
         circle.bindPopup(`<b>ID:</b> ${nId}`);
         AppState.leaflet.nodes[nId] = circle;
@@ -130,7 +127,6 @@ function drawLeafletBase(stepData) {
 }
 
 // --- CORE VISUAL ---
-
 function updateLeafletVis(index) {
     if (!AppState.leaflet.steps.length) return;
     
@@ -154,7 +150,7 @@ function updateLeafletVis(index) {
     }
 
     // --- CÁLCULO DE ESTADO ---
-    // Recorremos la historia para saber el rol de cada nodo
+    // Recorremos el JSON para saber el rol de cada nodo
     let state = {
         wtp: null, 
         infected: null, 
@@ -168,7 +164,7 @@ function updateLeafletVis(index) {
     for (let i = 0; i <= index; i++) {
         const s = AppState.leaflet.steps[i];
         if (s.wtp_node) state.wtp = String(s.wtp_node);
-        if (s.root_node) state.wtp = String(s.root_node); // Compatibilidad
+        if (s.root_node) state.wtp = String(s.root_node);
         if (s.infected_node) state.infected = String(s.infected_node);
 
         if (s.type === 'KNOWLEDGE_UPDATE' && s.updated_nodes) {
@@ -192,12 +188,11 @@ function updateLeafletVis(index) {
     AppState.leaflet.computedState = state; 
     AppState.leaflet.currentStepData = currentStep; // Para saber qué se selecciona en este paso
 
-    // Aplicar estilos a Aristas (No cambian con zoom)
+    // Aplicar estilos a Aristas
     Object.keys(AppState.leaflet.edges).forEach(key => {
         const poly = AppState.leaflet.edges[key];
         
         // Recuperamos los IDs de los nodos que conecta esta línea
-        // La clave se formó así: [idA, idB].sort().join('-')
         const parts = key.split('-');
         const idA = parts[0];
         const idB = parts[1];
@@ -212,7 +207,7 @@ function updateLeafletVis(index) {
             toFront = true;
         }
         // 2. Prioridad Baja: ¿Está descartada?
-        // Si CUALQUIERA de los dos extremos ha sido descartado, la tubería ya no sirve.
+        // Si cualquiera de los dos extremos ha sido descartado, la tubería ya no sirve.
         else if (state.discardedNodes.has(idA) || state.discardedNodes.has(idB)) {
             style = LEAFLET_STYLES.edge.discarded;
             toBack = true;
@@ -226,11 +221,11 @@ function updateLeafletVis(index) {
         if (toBack) poly.bringToBack();
     });
 
-    // Aplicar estilos a Nodos (Esto llama a la función inteligente)
+    // Aplicar estilos a Nodos
     refrescarEstilosNodos();
 }
 
-// --- FUNCIÓN INTELIGENTE DE VISIBILIDAD Y ESTILO ---
+// --- FUNCIÓN PARA VISIBILIDAD Y ESTILO ---
 function refrescarEstilosNodos() {
     const map = AppState.leaflet.instance;
     if (!map || !AppState.leaflet.computedState) return;
@@ -248,20 +243,31 @@ function refrescarEstilosNodos() {
         // 1. Determinar ROL y ESTILO BASE
         let style = LEAFLET_STYLES.node.default;
         let esImportante = false; // Si es true, se muestra SIEMPRE
-
+        
+        // Prioridades de Estilo:
         // Infectado y WTP (Máxima prioridad)
-        if (id === state.infected) { style = LEAFLET_STYLES.node.infected; esImportante = true; }
-        else if (id === state.wtp) { style = LEAFLET_STYLES.node.wtp; esImportante = true; }
+        if (id === state.infected) {
+            style = LEAFLET_STYLES.node.infected; esImportante = true;
+        }
+        else if (id === state.wtp) {
+            style = LEAFLET_STYLES.node.wtp; esImportante = true;
+        }
         // Selección actual
         else if (currentStep && currentStep.type === 'HEURISTIC_SELECTION' && currentStep.selected_nodes?.map(String).includes(id)) {
             style = LEAFLET_STYLES.node.selected; esImportante = true;
         }
         // Camino Final
-        else if (state.pathNodes.has(id)) { style = LEAFLET_STYLES.node.path; esImportante = true; }
+        else if (state.pathNodes.has(id)) {
+            style = LEAFLET_STYLES.node.path; esImportante = true;
+        }
         // Nodos con Conocimiento (Verdes)
-        else if (state.knownNodes.has(id)) { style = LEAFLET_STYLES.node.known; esImportante = true; }
+        else if (state.knownNodes.has(id)) {
+            style = LEAFLET_STYLES.node.known; esImportante = true;
+        }
         // Descartados
-        else if (state.discardedNodes.has(id)) { style = LEAFLET_STYLES.node.discarded; }
+        else if (state.discardedNodes.has(id)) {
+            style = LEAFLET_STYLES.node.discarded;
+        }
 
         // 2. Determinar VISIBILIDAD y TAMAÑO FINAL
         let opacity = 0;
@@ -274,7 +280,7 @@ function refrescarEstilosNodos() {
         } else {
             // Nodos de fondo (incluidos descartados): Solo visibles si hay zoom
             if (mostrarFondo) {
-                opacity = style.fillOpacity || 0.5; // Usar opacidad del estilo (baja para descartados)
+                opacity = style.fillOpacity || 0.5;
                 radius = RADIO_FONDO;
             } else {
                 opacity = 0; // Totalmente invisibles de lejos
@@ -293,13 +299,14 @@ function refrescarEstilosNodos() {
         
         circle.setRadius(radius);
 
-        // Z-Index: Importantes al frente
+        // Importantes al frente
         if (esImportante) circle.bringToFront();
         else circle.bringToBack();
     });
 }
 
-// --- CONTROLES (Iguales que antes) ---
+// --- CONTROLES ---
+// Play / Pause
 function toggleLeafletPlay() {
     const btn = document.getElementById('btn-play');
     if (AppState.leaflet.isPlaying) {
@@ -322,6 +329,7 @@ function pauseLeaflet() {
     if(btn) btn.innerText = "▶ Reproducir";
 }
 
+// Siguiente / Anterior
 function nextStepLeaflet() {
     pauseLeaflet();
     const current = AppState.leaflet.currentStep;

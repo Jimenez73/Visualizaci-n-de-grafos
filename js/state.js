@@ -1,4 +1,3 @@
-// js/state.js
 const AppState = {
     // Estado del Mapa (Leaflet)
     leaflet: {
@@ -11,11 +10,11 @@ const AppState = {
         timer: null
     },
     
-    // Estado del Algoritmo (Vis.js + Pseudocode)
+    // Estado del Algoritmo (Pseudocode)
     algorithm: {
         network: null,
-        dataSetNodes: null, // vis.DataSet
-        dataSetEdges: null, // vis.DataSet
+        dataSetNodes: null,
+        dataSetEdges: null,
         domPseudocode: null, // Referencia al HTML del código
         frames: [],
         currentFrame: 0,

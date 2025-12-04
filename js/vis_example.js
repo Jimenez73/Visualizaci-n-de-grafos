@@ -1,5 +1,4 @@
-// js/vis_example.js
-
+// Visuales de Ejemplo de Búsqueda en Grafo y Árbol de Decisión
 const EXAMPLE_OPTIONS_GRAPH = {
     nodes: { 
         shape: 'dot', 
@@ -8,7 +7,7 @@ const EXAMPLE_OPTIONS_GRAPH = {
     },
     edges: { 
         arrows: 'to',
-        color: { inherit: false }, // inherit: false desacopla el color
+        color: { inherit: false },
         width: 2
     },
     layout: {
@@ -57,6 +56,7 @@ const EXAMPLE_OPTIONS_TREE = {
     }
 };
 
+// Estado del Ejemplo
 let exampleState = {
     frames: [],
     currentFrame: 0,
@@ -65,11 +65,12 @@ let exampleState = {
     dataTree: { nodes: null, edges: null }
 };
 
+// Inicialización del Ejemplo
 async function initExampleView() {
     if (exampleState.frames.length > 0) return;
 
     try {
-        const res = await fetch('data/example_flow.json');
+        const res = await fetch('data/example_graph.json');
         const data = await res.json();
         
         exampleState.frames = data.frames;
@@ -100,6 +101,7 @@ async function initExampleView() {
     } catch (e) { console.error("Error cargando ejemplo:", e); }
 }
 
+// Actualizar Visualización del Ejemplo
 function updateExampleVis(index) {
     if (!exampleState.frames.length) return;
     
@@ -126,15 +128,15 @@ function updateExampleVis(index) {
 
     // 2. Función de Limpieza (Reset)
     const resetNodeStyles = (n) => { n.color = null; n.scale = 1; };
-    const resetEdgeStyles = (e) => { e.color = null; e.width = 2; }; // Volver al gris por defecto
+    const resetEdgeStyles = (e) => { e.color = null; e.width = 2; };
 
-    // Limpiamos todo antes de empezar
+    // Limpiar todo antes de empezar
     currentGraphNodes.forEach(resetNodeStyles);
     currentGraphEdges.forEach(resetEdgeStyles);
     currentTreeNodes.forEach(resetNodeStyles);
     currentTreeEdges.forEach(resetEdgeStyles);
 
-    // 3. Aplicar Historia (Frames)
+    // 3. Aplicar Frames
     for (let i = 0; i <= index; i++) {
         const f = exampleState.frames[i];
         
@@ -146,7 +148,7 @@ function updateExampleVis(index) {
                 if (node) Object.assign(node, u);
             });
         }
-        // Aristas (NUEVO)
+        // Aristas
         if (f.updatesGraphEdges) {
             f.updatesGraphEdges.forEach(u => {
                 const edge = currentGraphEdges.find(e => e.id === u.id);
@@ -162,7 +164,7 @@ function updateExampleVis(index) {
                 if (node) Object.assign(node, u);
             });
         }
-        // Aristas (NUEVO)
+        // Aristas
         if (f.updatesTreeEdges) {
             f.updatesTreeEdges.forEach(u => {
                 const edge = currentTreeEdges.find(e => e.id === u.id);
@@ -171,12 +173,12 @@ function updateExampleVis(index) {
         }
     }
 
-    // 4. Actualizar Vis.js (DataSets)
+    // 4. Actualizar estados del ejemplo
     exampleState.dataGraph.nodes.update(currentGraphNodes);
-    exampleState.dataGraph.edges.update(currentGraphEdges); // Update Aristas
+    exampleState.dataGraph.edges.update(currentGraphEdges);
     
     exampleState.dataTree.nodes.update(currentTreeNodes);
-    exampleState.dataTree.edges.update(currentTreeEdges);   // Update Aristas
+    exampleState.dataTree.edges.update(currentTreeEdges);
 }
 
 function nextExampleStep() { updateExampleVis(exampleState.currentFrame + 1); }

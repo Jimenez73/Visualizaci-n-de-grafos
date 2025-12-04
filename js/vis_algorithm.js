@@ -1,5 +1,4 @@
-// js/vis_algorithm.js
-
+// --- ESTILO DEL GRAFO ---
 const VIS_OPTIONS = {
     nodes: {
         shape: 'circle',
@@ -34,6 +33,7 @@ const VIS_OPTIONS = {
 // Variable auxiliar para guardar la estructura base original
 let algorithmBaseNodes = [];
 
+// --- INICIALIZACIÓN DEL ALGORITMO ---
 async function initAlgorithmView() {
     const codeElement = document.getElementById("greedy_algorithm");
     if (!codeElement && !AppState.algorithm.domPseudocode) return;
@@ -65,18 +65,19 @@ async function initAlgorithmView() {
     }, 100);
 }
 
+// --- CARGA Y ACTUALIZACIÓN DE DATOS ---
 async function cargarDatosGrafo() {
     try {
-        const res = await fetch('data/graph_movie.json');
+        const res = await fetch('data/pseudocode_graph.json');
         if (!res.ok) throw new Error("JSON no encontrado");
         
         const data = await res.json();
         AppState.algorithm.frames = data.frames;
         
-        // GUARDAMOS EL ESTADO BASE (Original limpio)
-        algorithmBaseNodes = data.structure.nodes.map(n => ({...n, color:'#e0e0e0'})); // Color base por defecto
+        // GUARDAMOS EL ESTADO BASE DE LOS NODOS
+        algorithmBaseNodes = data.structure.nodes.map(n => ({...n, color:'#e0e0e0'}));
 
-        // Inicializar Vis.js
+        // Inicialización de los estados
         AppState.algorithm.dataSetNodes = new vis.DataSet(algorithmBaseNodes);
         AppState.algorithm.dataSetEdges = new vis.DataSet(data.structure.edges);
 
@@ -87,7 +88,7 @@ async function cargarDatosGrafo() {
                 edges: AppState.algorithm.dataSetEdges 
             }, VIS_OPTIONS);
 
-            setTimeout(() => AppState.algorithm.network.fit(), 100);
+            setTimeout(() => AppState.algorithm.network.fit(), 100);    // set timeout por si acaso no se renderiza bien
         }
         
         updateAlgorithmVis(0);
@@ -95,6 +96,7 @@ async function cargarDatosGrafo() {
     } catch (e) { console.error("Error grafo:", e); }
 }
 
+// --- ACTUALIZACIÓN DE LA VISUALIZACIÓN ---
 function updateAlgorithmVis(index) {
     const frames = AppState.algorithm.frames;
     if (!frames || index < 0 || index >= frames.length) return;
@@ -102,12 +104,12 @@ function updateAlgorithmVis(index) {
     AppState.algorithm.currentFrame = index;
     const frame = frames[index];
 
-    // --- LÓGICA DE REPLAY (Solución al problema de colores) ---
+    // --- LÓGICA DE REPLAY ---
     
     // 1. Empezamos con una copia limpia de los nodos originales
     let currentNodes = JSON.parse(JSON.stringify(algorithmBaseNodes));
 
-    // 2. Aplicamos la historia paso a paso
+    // 2. Aplicamos el JSON paso a paso hasta el frame actual
     for (let i = 0; i <= index; i++) {
         const f = frames[i];
         if (f.updates) {
@@ -118,11 +120,11 @@ function updateAlgorithmVis(index) {
         }
     }
 
-    // 3. Actualizamos Vis.js con el estado calculado
+    // 3. Actualizamos con el estado calculado
     AppState.algorithm.dataSetNodes.update(currentNodes);
 
 
-// --- ACTUALIZACIÓN DE UI (NUEVO DISEÑO) ---
+// --- ACTUALIZACIÓN DE UI ---
     
     // 1. Actualizar Variables (Panel inferior)
     if (frame.variables) {
@@ -146,13 +148,14 @@ function updateAlgorithmVis(index) {
     // Actualizamos el número en el centro
     if (numSpan) numSpan.innerText = index; 
 
-    // Actualizamos solo la descripción abajo
+    // Actualizamos la descripción
     if (descSpan) descSpan.innerText = frame.description || '';
     
     // 3. Highlight del código
     if (frame.lineCode) destacarLineaCodigo(frame.lineCode);
 }
 
+// Función para resaltar una línea del pseudocódigo
 function destacarLineaCodigo(lineNum) {
     if (!AppState.algorithm.domPseudocode) return;
     
@@ -163,9 +166,8 @@ function destacarLineaCodigo(lineNum) {
         l.style.borderLeft = "";
     });
 
-    const index = lineNum + 2;
+    const index = lineNum + 2;  // Ajuste por numeración y encabezados
     if (lines[index]) {
         lines[index].classList.add('linea-activa');
-        // lines[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }

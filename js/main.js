@@ -1,3 +1,4 @@
+// Evento al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     setupGlobalControls();
@@ -5,18 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     setupUncertaintyWidget();
 });
 
+// Configuración de la navegación del sidebar
 function setupNavigation() {
     // 1. Manejo de Links Normales y Sub-links
     const navLinks = document.querySelectorAll('.nav-link');
     
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            // Si es el botón padre del acordeón, NO navegamos, solo abrimos/cerramos
+            // Lógica de Toggle para grupos padres (apéndice)
             if (link.classList.contains('parent-toggle')) {
                 e.preventDefault();
                 const group = link.closest('.nav-group');
                 group.classList.toggle('open');
-                return; // Terminamos aquí, no cambiamos de vista
+                return;
             }
 
             e.preventDefault();
@@ -31,14 +33,14 @@ function setupNavigation() {
                  link.closest('.nav-group').classList.add('open');
             }
 
-            // Cambiar Vista
+            // Cambiar Vista (se añade clase 'active' a la sección correspondiente)
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             const pageId = link.dataset.page;
             
             const target = document.getElementById(`${pageId}-view`);
             if (target) target.classList.add('active');
 
-            // Lógica Específica
+            // Lógica Específica para cada vista
             if (pageId === 'mapa') {
                 initLeafletMap();
                 setTimeout(() => AppState.leaflet.instance?.invalidateSize(), 100);
@@ -47,21 +49,22 @@ function setupNavigation() {
                 initAlgorithmView();
                 initExampleView();
             }
-            // Renderizar LaTeX en las nuevas vistas si es necesario
+            
             if (pageId === 'calculo-b') {
-                // Pequeño truco para asegurar que pseudocode.js renderice el bloque nuevo
+                // Renderizar LaTeX si es necesario
                 setTimeout(() => {
                     const mathBlock = document.querySelector('#calculo-b-view .pseudocode');
                     if (mathBlock && !mathBlock.dataset.rendered) {
                          pseudocode.renderElement(mathBlock, { lineNumber: false });
                          mathBlock.dataset.rendered = "true";
                     }
-                }, 100);
+                }, 100);    // Mismo delay para asegurar que el DOM esté listo
             }
         });
     });
 }
 
+// Configuración de controles globales
 function setupGlobalControls() {
     // 1. Controles del MAPA (Leaflet)
     // ----------------------------------------
@@ -80,7 +83,7 @@ function setupGlobalControls() {
     if (btnNext) {
         const newBtn = btnNext.cloneNode(true);
         btnNext.parentNode.replaceChild(newBtn, btnNext);
-        newBtn.addEventListener('click', nextStepLeaflet); // <--- Conectado aquí
+        newBtn.addEventListener('click', nextStepLeaflet);
     }
 
     // Botón Anterior
@@ -88,7 +91,7 @@ function setupGlobalControls() {
     if (btnPrev) {
         const newBtn = btnPrev.cloneNode(true);
         btnPrev.parentNode.replaceChild(newBtn, btnPrev);
-        newBtn.addEventListener('click', prevStepLeaflet); // <--- Conectado aquí
+        newBtn.addEventListener('click', prevStepLeaflet);
     }
 
     // Slider
@@ -106,7 +109,6 @@ function setupGlobalControls() {
 
     // 2. Controles del ALGORITMO (Vis.js)
     // ----------------------------------------
-    // (Asegúrate de tener estos botones creados en tu HTML en la sección Algoritmo)
     document.getElementById('algo-btn-next')?.addEventListener('click', () => {
         const next = AppState.algorithm.currentFrame + 1;
         updateAlgorithmVis(next);
@@ -121,6 +123,7 @@ function setupGlobalControls() {
     document.getElementById('ex-btn-prev')?.addEventListener('click', prevExampleStep);
 }
 
+// Configuración de enlaces internos
 function setupInternalLinks() {
     // Buscamos todos los links internos
     const links = document.querySelectorAll('.internal-link');
@@ -131,13 +134,9 @@ function setupInternalLinks() {
             const targetPage = link.dataset.target;
 
             // Buscamos el enlace correspondiente en el Sidebar
-            // (El selector busca un .nav-link que tenga data-page="calculo-b")
             const sidebarLink = document.querySelector(`.nav-link[data-page="${targetPage}"]`);
 
             if (sidebarLink) {
-                // ¡SIMULAMOS EL CLIC!
-                // Esto disparará toda tu lógica existente: 
-                // abrirá el acordeón, cambiará la vista y cargará los scripts necesarios.
                 sidebarLink.click();
             } else {
                 console.warn(`No se encontró un enlace en el menú para: ${targetPage}`);
@@ -146,8 +145,7 @@ function setupInternalLinks() {
     });
 }
 
-// En js/main.js
-
+// Configuración del widget de incertidumbre
 function setupUncertaintyWidget() {
     const buttons = document.querySelectorAll('.u-btn');
     const images = document.querySelectorAll('.u-state-img');

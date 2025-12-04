@@ -32,7 +32,7 @@ body {
     flex: 1;
     position: relative;
     background: var(--bg-main);
-    overflow-y: auto; /* Scroll vertical si el contenido es largo */
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -63,7 +63,7 @@ body {
 }
 
 /* =========================================
-   3. SIDEBAR (Barra Lateral) - ESTILO UNIFICADO
+   3. SIDEBAR
    ========================================= */
 #sidebar-nav {
     width: 250px;
@@ -90,47 +90,41 @@ body {
     padding-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 2px; /* Espacio mínimo entre items */
+    gap: 2px;
 }
 
-/* --- ESTILO BASE PARA TODOS LOS LINKS (Padres e Hijos) --- */
 .nav-link {
     text-decoration: none;
     color: #64748b;
-    padding: 12px 20px; /* Padding generoso */
+    padding: 12px 20px;
     display: flex;
     align-items: center;
     gap: 12px;
     transition: all 0.2s ease;
-    
-    /* El nuevo estilo unificado: Borde izquierdo */
     border-left: 3px solid transparent; 
-    border-radius: 0; /* Quitamos bordes redondeados antiguos */
+    border-radius: 0;
 }
 
-/* Estado Hover y Activo (Unificado) */
+/* Estado Hover y Activo */
 .nav-link:hover, .nav-link.active {
-    background: #f8fafc; /* Fondo gris muy suave */
+    background: #f8fafc;
     color: var(--primary);
-    border-left-color: var(--primary); /* La línea azul a la izquierda */
+    border-left-color: var(--primary);
 }
 
-/* --- ESTILOS ESPECÍFICOS PARA EL GRUPO APÉNDICE --- */
-
+/* --- APÉNDICE --- */
 .nav-group {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-/* Botón Padre (Apéndice) */
 .parent-toggle {
     cursor: pointer;
     user-select: none;
-    /* Alineación: Todo a la izquierda por defecto gracias a flex */
 }
 
-/* Empujamos SOLO la flecha a la derecha total */
+/* Flecha */
 .arrow-icon {
     margin-left: auto; 
     font-size: 0.8rem;
@@ -144,11 +138,10 @@ body {
     color: var(--primary);
 }
 
-/* Contenedor de Sub-menú */
 .nav-submenu {
     display: none;
     flex-direction: column;
-    background-color: #ffffff; /* Opcional: un tono un poco más claro u oscuro si quisieras */
+    background-color: #ffffff;
 }
 
 .nav-group.open .nav-submenu {
@@ -158,11 +151,11 @@ body {
 
 /* Links Hijos (Indentados) */
 .sub-link {
-    padding-left: 45px; /* 20px base + 25px extra de sangría */
-    font-size: 0.95rem; /* Un poco más pequeños */
+    padding-left: 45px;
+    font-size: 0.95rem;
 }
 
-/* Animación suave */
+/* Animación */
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
@@ -197,13 +190,13 @@ body {
     background: #fff;
     padding: 30px;
     border-radius: 8px;
-    border-left: 5px solid #f59e0b; /* Naranja */
+    border-left: 5px solid #f59e0b;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     font-size: 1.05rem;
     line-height: 1.6;
 }
 
-/* Noticias (Zig-Zag) */
+/* Noticias */
 .news-section {
     display: flex;
     flex-direction: column;
@@ -248,21 +241,21 @@ body {
 
 .news-video {
     width: 100%;           
-    max-width: 450px;      /* Un poco más ancho para que se vea bien el texto de YouTube */
-    border-radius: 12px;   /* Bordes redondeados modernos */
+    max-width: 450px;
+    border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-    aspect-ratio: 16 / 9;  /* Mantiene la proporción panorámica automáticamente */
-    background: #000;      /* Fondo negro mientras carga */
-    border: none;          /* Quita el borde por defecto del iframe */
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: none;
 }
 
-/* Estilo para el link de "Leer más" en noticias */
+
 .read-more-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px; /* Espacio entre texto y flecha */
+    gap: 8px;
     margin-top: 15px;
-    color: var(--primary); /* Usa tu azul corporativo */
+    color: var(--primary);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -270,44 +263,19 @@ body {
 }
 
 .read-more-link svg {
-    transition: transform 0.2s; /* Para animar la flecha */
+    transition: transform 0.2s;
 }
 
 .read-more-link:hover {
-    color: #2563eb; /* Un azul un poco más oscuro */
+    color: #2563eb;
     text-decoration: underline;
 }
 
-/* Efecto: La flecha se mueve a la derecha al pasar el mouse */
 .read-more-link:hover svg {
     transform: translateX(4px);
 }
 
-/* Investigación */
-.research-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-}
-
-.custom-list { list-style: none; padding: 0; }
-.custom-list li {
-    padding: 15px 0;
-    border-bottom: 1px solid #f1f5f9;
-    position: relative;
-    padding-left: 30px;
-}
-.custom-list li:last-child { border-bottom: none; }
-.custom-list li::before {
-    content: "➤";
-    position: absolute;
-    left: 0;
-    color: var(--primary);
-    font-weight: bold;
-}
-
-/* --- WIDGET DE EXPLICACIÓN DE INCERTIDUMBRE --- */
-
+/* Widget de incertidumbre */
 .uncertainty-widget {
     background: #fff;
     padding: 20px;
@@ -318,7 +286,6 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* Contenedor de las imágenes: Necesita altura para que las imágenes absolutas no colapsen */
 .u-images-container {
     position: relative;
     width: 100%;
@@ -330,25 +297,22 @@ body {
     border: 1px solid #e2e8f0;
 }
 
-/* Las imágenes en sí */
 .u-state-img {
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%); /* Centradas horizontalmente */
+    transform: translateX(-50%);
     max-width: 100%;
     max-height: 100%;
     height: auto;
-    
-    /* El truco de la transición */
+    /* transición */
     opacity: 0; 
     transition: opacity 0.4s ease-in-out;
 }
 
-/* Solo la imagen con la clase .active será visible */
 .u-state-img.active {
     opacity: 1;
-    z-index: 2; /* Asegura que quede arriba */
+    z-index: 2;
 }
 
 /* Controles */
@@ -365,7 +329,7 @@ body {
     padding: 8px 15px;
 }
 
-/* Botón activo (reutiliza tu color primario) */
+/* Botón activo */
 .u-btn.active {
     background: var(--primary);
     color: white;
@@ -376,7 +340,7 @@ body {
    5. PESTAÑA: ALGORITMO
    ========================================= */
 
-/* Teoría (Tarjetas Superiores) */
+/* Tarjetas de teoría */
 .algo-theory-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -395,7 +359,7 @@ body {
 .theory-card h3 { margin-top: 0; font-size: 1.1rem; color: var(--text-main); }
 .theory-card ul { padding-left: 20px; margin-bottom: 0; }
 
-/* Ejemplo Conceptual (Grids) */
+/* Ejemplo Conceptual */
 .example-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -411,7 +375,7 @@ body {
     text-align: center;
 }
 
-/* Controles Generales (Botones) */
+/* Controles */
 .control-btn {
     padding: 8px 16px;
     cursor: pointer;
@@ -422,9 +386,6 @@ body {
 }
 .control-btn:hover { background: #f1f5f9; }
 
-/* Controles Específicos del Ejemplo (Centrados) */
-/* --- CONTROLES SIMPLES (Actualizado para evitar saltos) --- */
-
 .simple-centered-controls {
     display: flex;
     flex-direction: column;
@@ -432,38 +393,29 @@ body {
     gap: 15px;
     margin-bottom: 20px;
     padding: 10px;
-    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    width: 100%;
     box-sizing: border-box;
 }
 
-/* Fila Superior: Botones y Número */
 .controls-top-row {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-/* Fila Inferior: Descripción (Caja Dedicada) */
+/* Descripción (Caja Dedicada) */
 .controls-bottom-row {
-    /* 1. Ocupar más espacio horizontal */
     width: 90%; 
-    max-width: 900px; /* Antes era 600px, ahora es más ancho */
-    
-    /* 2. Evitar el "salto": Altura mínima fija */
-    min-height: 80px; /* Espacio suficiente para unas 3 líneas de texto */
-    
-    /* 3. Centrado del texto dentro de la caja fija */
+    max-width: 900px;
+    min-height: 80px;
     display: flex;
-    align-items: center;     /* Centrado vertical */
-    justify-content: center; /* Centrado horizontal */
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    
-    /* 4. Estética de "Consola" o Caja de texto */
-    background-color: #f8fafc; /* Fondo gris muy suave */
-    border: 1px solid #e2e8f0; /* Borde sutil */
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 15px 25px; /* Espacio interno cómodo */
-    
+    padding: 15px 25px;
     /* Tipografía */
     font-size: 1.05rem;
     font-weight: 500;
@@ -488,7 +440,7 @@ body {
 }
 .fixed-btn:hover { background: var(--text-main); color: white; }
 
-/* Sección Interactiva (Pseudocódigo + Vis) */
+/* Sección Interactiva */
 .algo-controls {
     display: flex;
     align-items: center;
@@ -534,7 +486,7 @@ body {
 .ps-line.linea-activa > .ps-code, 
 .ps-line.linea-activa > .ps-linenum { background-color: transparent !important; }
 
-/* --- MONITOR DE VARIABLES --- */
+/* Monitor de variables */
 .variables-panel {
     margin-top: 20px;
     background: #ffffff;
@@ -557,7 +509,7 @@ body {
 
 .vars-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 }
 
@@ -580,21 +532,21 @@ body {
 }
 
 .var-value {
-    font-family: 'Consolas', 'Monaco', monospace; /* Estilo código */
+    font-family: 'Consolas', 'Monaco', monospace;
     font-size: 1rem;
     color: var(--text-main);
     font-weight: 600;
     text-align: center;
-    word-break: break-word; /* Evita que conjuntos largos rompan el diseño */
+    word-break: break-word; /* Evita que se rompa el diseño */
 }
 
 /* =========================================
    6. PESTAÑA: MAPA (Leaflet)
    ========================================= */
 #mapa-view {
-    height: 100%; /* Excepción: Ocupa todo el alto */
+    height: 100%;
     padding: 0;
-    overflow: hidden; /* El mapa maneja su propio scroll/pan */
+    overflow: hidden;
 }
 
 #map-container {
@@ -651,7 +603,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    max-width: 900px; /* Ancho máximo para que no se deformen los gráficos */
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -694,7 +646,7 @@ body {
     text-align: center;
     background: #fff;
     position: relative;
-    cursor: zoom-in; /* Indica que se puede ampliar */
+    cursor: zoom-in;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -727,17 +679,6 @@ body {
     opacity: 1;
 }
 
-/* Placeholder para cuando no hay imagen */
-.placeholder-chart {
-    height: 300px;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    border: 2px dashed #cbd5e1;
-}
-
 /* Caja de Análisis */
 .analysis-box {
     padding: 25px;
@@ -761,64 +702,6 @@ body {
 .stat-list li {
     margin-bottom: 10px;
     line-height: 1.5;
-}
-
-/* --- MODAL (Lightbox) para ver gráficos grandes --- */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 3000; 
-    padding-top: 50px; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.9); 
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 1200px;
-    max-height: 90vh;
-    object-fit: contain;
-    border-radius: 4px;
-    animation: zoomIn 0.3s;
-}
-
-@keyframes zoomIn {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
-}
-
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.close-modal:hover,
-.close-modal:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
 }
 
 /* =========================================
@@ -874,12 +757,15 @@ body {
 }
 .ref-link:hover { text-decoration: underline; color: #2563eb; }
 
+/* =========================================
+   9. Otros
+   ========================================= */
 /* Estilo para enlaces internos dentro de párrafos */
 .internal-link {
     color: var(--primary);
     text-decoration: none;
     font-weight: 600;
-    border-bottom: 1px dashed var(--primary); /* Subrayado punteado elegante */
+    border-bottom: 1px dashed var(--primary);
     cursor: pointer;
     transition: all 0.2s;
 }
