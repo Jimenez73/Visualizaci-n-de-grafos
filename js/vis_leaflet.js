@@ -88,14 +88,26 @@ function drawLeafletBase(stepData) {
     edges.forEach(e => {
         const sId = String(e.source);
         const tId = String(e.target);
-        // Buscamos coordenadas en la lista de nodos
-        // (Esto asume que el JSON trae nodes completos en el paso 0)
-        const nodeS = nodes.find(n => String(n.id) === sId);
-        const nodeT = nodes.find(n => String(n.id) === tId);
+        
+        // --- AQUÍ ESTÁ EL CAMBIO ---
+        // Verificamos si el JSON trajo la geometría detallada
+        let pathCoordinates = [];
 
-        if (nodeS && nodeT) {
-            const poly = L.polyline([[nodeS.lat, nodeS.lon], [nodeT.lat, nodeT.lon]], LEAFLET_STYLES.edge.default)
-                          .addTo(map);
+        if (e.geometry && e.geometry.length > 0) {
+            // ¡Usamos la forma real de la tubería!
+            pathCoordinates = e.geometry; 
+        } else {
+            // Fallback: Línea recta si no hay datos (por si acaso)
+            const nodeS = nodes.find(n => String(n.id) === sId);
+            const nodeT = nodes.find(n => String(n.id) === tId);
+            if (nodeS && nodeT) {
+                pathCoordinates = [[nodeS.lat, nodeS.lon], [nodeT.lat, nodeT.lon]];
+            }
+        }
+
+        // Si tenemos coordenadas válidas, dibujamos
+        if (pathCoordinates.length > 0) {
+            const poly = L.polyline(pathCoordinates, LEAFLET_STYLES.edge.default).addTo(map);
             const key = [sId, tId].sort().join('-');
             AppState.leaflet.edges[key] = poly;
         }
