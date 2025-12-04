@@ -63,7 +63,7 @@ body {
 }
 
 /* =========================================
-   3. SIDEBAR (Barra Lateral)
+   3. SIDEBAR (Barra Lateral) - ESTILO UNIFICADO
    ========================================= */
 #sidebar-nav {
     width: 250px;
@@ -72,7 +72,7 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 2000;
-    flex-shrink: 0; /* Evita que se encoja */
+    flex-shrink: 0;
 }
 
 .nav-header {
@@ -83,29 +83,89 @@ body {
 .nav-header h3 {
     margin: 0;
     color: var(--primary);
+    font-size: 1.2rem;
 }
 
 .nav-items {
-    padding: 10px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px; /* Espacio mínimo entre items */
 }
 
+/* --- ESTILO BASE PARA TODOS LOS LINKS (Padres e Hijos) --- */
 .nav-link {
     text-decoration: none;
     color: #64748b;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 12px 20px; /* Padding generoso */
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: 0.2s;
+    gap: 12px;
+    transition: all 0.2s ease;
+    
+    /* El nuevo estilo unificado: Borde izquierdo */
+    border-left: 3px solid transparent; 
+    border-radius: 0; /* Quitamos bordes redondeados antiguos */
 }
 
+/* Estado Hover y Activo (Unificado) */
 .nav-link:hover, .nav-link.active {
-    background: #eff6ff;
+    background: #f8fafc; /* Fondo gris muy suave */
     color: var(--primary);
+    border-left-color: var(--primary); /* La línea azul a la izquierda */
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA EL GRUPO APÉNDICE --- */
+
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Botón Padre (Apéndice) */
+.parent-toggle {
+    cursor: pointer;
+    user-select: none;
+    /* Alineación: Todo a la izquierda por defecto gracias a flex */
+}
+
+/* Empujamos SOLO la flecha a la derecha total */
+.arrow-icon {
+    margin-left: auto; 
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    color: #94a3b8;
+}
+
+/* Rotación de flecha */
+.nav-group.open .arrow-icon {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+/* Contenedor de Sub-menú */
+.nav-submenu {
+    display: none;
+    flex-direction: column;
+    background-color: #ffffff; /* Opcional: un tono un poco más claro u oscuro si quisieras */
+}
+
+.nav-group.open .nav-submenu {
+    display: flex;
+    animation: slideDown 0.2s ease-out;
+}
+
+/* Links Hijos (Indentados) */
+.sub-link {
+    padding-left: 45px; /* 20px base + 25px extra de sangría */
+    font-size: 0.95rem; /* Un poco más pequeños */
+}
+
+/* Animación suave */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================
@@ -244,6 +304,72 @@ body {
     left: 0;
     color: var(--primary);
     font-weight: bold;
+}
+
+/* --- WIDGET DE EXPLICACIÓN DE INCERTIDUMBRE --- */
+
+.uncertainty-widget {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    max-width: 1000px;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Contenedor de las imágenes: Necesita altura para que las imágenes absolutas no colapsen */
+.u-images-container {
+    position: relative;
+    width: 100%;
+    height: 700px; 
+    background: #f8fafc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Las imágenes en sí */
+.u-state-img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Centradas horizontalmente */
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    
+    /* El truco de la transición */
+    opacity: 0; 
+    transition: opacity 0.4s ease-in-out;
+}
+
+/* Solo la imagen con la clase .active será visible */
+.u-state-img.active {
+    opacity: 1;
+    z-index: 2; /* Asegura que quede arriba */
+}
+
+/* Controles */
+.u-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Botones específicos del widget */
+.u-btn {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+/* Botón activo (reutiliza tu color primario) */
+.u-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
 /* =========================================
@@ -392,14 +518,13 @@ body {
 
 /* Eficiencia */
 .efficiency-box {
-    background: #1e293b;
-    color: #4ade80;
+    background: #f1f5f9;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
     font-size: 1.5rem;
     margin: 20px auto;
-    max-width: 400px;
+    max-width: 250px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
@@ -748,3 +873,18 @@ body {
     align-items: center;
 }
 .ref-link:hover { text-decoration: underline; color: #2563eb; }
+
+/* Estilo para enlaces internos dentro de párrafos */
+.internal-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed var(--primary); /* Subrayado punteado elegante */
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.internal-link:hover {
+    background-color: #eff6ff;
+    border-bottom-style: solid;
+}

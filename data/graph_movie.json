@@ -38,7 +38,7 @@
       "lineCode": 1,
       "description": "Iniciar conjunto S con el nodo raíz",
       "variables": {
-        "S": "{r}",
+        "S": "{1}",
         "aux": "NULL",
         "auxv": "NULL"
       },
@@ -54,7 +54,7 @@
       "lineCode": 5,
       "description": "Revisamos cada nodo en el árbol para encontrar el mejor candidato",
       "variables": {
-        "S": "{r}",
+        "S": "{1}",
         "aux": "-1",
         "auxv": "-∞"
       },
@@ -72,7 +72,7 @@
       "step": 4,
       "description": "Revizamos el nodo 2",
       "variables": {
-        "S": "{r}",
+        "S": "{1}",
         "aux": "-1",
         "auxv": "-∞"
       },
@@ -91,7 +91,7 @@
       "lineCode": 6,
       "description": "Contamos todos los nodos desde los cuales toda ruta posible hacia la raíz (r) debe pasar obligatoriamente por 2. Esto incluye al mismo nodo 2, dando un total de 4 nodos (2, 4, 6, 7).",
       "variables": {
-        "S": "{r}",
+        "S": "{1}",
         "aux": "-1",
         "auxv": "-∞"
       },
@@ -106,7 +106,7 @@
       "lineCode": 7,
       "description": "Verificamos la condición y actualizamos aux y auxv",
       "variables": {
-        "S": "{r}",
+        "S": "{1}",
         "aux": "2",
         "auxv": "4"
       },
@@ -115,6 +115,141 @@
         { "id": 6, "color": null },
         { "id": 7, "color": null }
       ]
+    },
+    {
+      "step": 7,
+      "lineCode": 5,
+      "description": "Revisamos el siguiente nodo, el 3",
+      "variables": {
+        "S": "{1}",
+        "aux": "2",
+        "auxv": "4"
+      },
+      "updates": [ 
+        { "id": 2, "color": null },
+        { "id": 3, "color": "#3695e3" }
+      ]
+    },
+    {
+      "step": 8,
+      "lineCode": 6,
+      "description": "Contamos sus nodos dependientes, pero no encontramos ninguno adicional, solo el mismo nodo 3, dando un total de 1.",
+      "variables": {
+        "S": "{1}",
+        "aux": "2",
+        "auxv": "4"
+      }
+    },
+    {
+      "step": 9,
+      "lineCode": 7,
+      "description": "Verificamos la condicion, pero no la cumple. Mantenemos aux y auxv",
+      "variables": {
+        "S": "{1}",
+        "aux": "2",
+        "auxv": "4"
+      }
+    },
+    {
+      "step": 10,
+      "lineCode": 5,
+      "description": "Del resto de los nodos (4, 5, 6, 7, 8), ninguno tiene nodos dependientes adicionales que no estén ya contados en auxv. Por lo tanto, aux y auxv permanecen sin cambios.",
+      "variables": {
+        "S": "{1}",
+        "aux": "2",
+        "auxv": "4"
+      },
+      "updates": [ 
+        { "id": 3, "color": null },
+        { "id": 4, "color": "#3695e3" },
+        { "id": 5, "color": "#3695e3" },
+        { "id": 6, "color": "#3695e3" },
+        { "id": 7, "color": "#3695e3" },
+        { "id": 8, "color": "#3695e3" }
+      ]
+    },
+    {
+      "step": 11,
+      "lineCode": 11,
+      "description": "Añadimos el mejor candidato (nodo 2) al conjunto S",
+      "variables": {
+        "S": "{1, 2}",
+        "aux": "2",
+        "auxv": "4"
+      },
+      "updates": [
+        { "id": 2, "color": "#ffb74d" },
+        { "id": 4, "color": null },
+        { "id": 5, "color": null },
+        { "id": 6, "color": null },
+        { "id": 7, "color": null },
+        { "id": 8, "color": null }
+      ]
+    },
+    {
+      "step": 12,
+      "lineCode": 2,
+      "description": "Nos falta añadir más nodos al conjunto S hasta tener k+1 nodos",
+      "variables": {
+        "S": "{1, 2}",
+        "aux": "-1",
+        "auxv": "-∞"
+      },
+      "updates": [ 
+        { "id": 4, "color": null },
+        { "id": 5, "color": null },
+        { "id": 6, "color": null },
+        { "id": 7, "color": null },
+        { "id": 8, "color": null }
+      ]
+    },
+    {
+      "step": 13,
+      "lineCode": 5,
+      "description": "Ya vimos que el nodo 4 tiene 2 nodos que pasan estríctamente por él (4 y 7)",
+      "variables": {
+        "S": "{1, 2}",
+        "aux": "4",
+        "auxv": "2"
+      },
+      "updates": [ 
+        { "id": 4, "color": "#3695e3" },
+        { "id": 7, "color": "#97bdde" }
+      ]
+    },
+    {
+      "step": 14,
+      "lineCode": 11,
+      "description": "Añadimos el nodo 4 al conjunto S",
+      "variables": {
+        "S": "{1, 2, 4}",
+        "aux": "4",
+        "auxv": "2"
+      },
+      "updates": [ 
+        { "id": 4, "color": "#ffb74d" },
+        { "id": 7, "color": null }
+      ]
+    },
+    {
+      "step": 15,
+      "lineCode": 2,
+      "description": "Tenemos la cantidad de nodos necesarios en el conjunto S",
+      "variables": {
+        "S": "{1, 2, 4}",
+        "aux": "4",
+        "auxv": "2"
+      }
+    },
+    {
+      "step": 16,
+      "lineCode": 14,
+      "description": "Se retorna el conjunto S = {1, 2, 4}",
+      "variables": {
+        "S": "{1, 2, 4}",
+        "aux": "4",
+        "auxv": "2"
+      }
     }
   ]
 }
